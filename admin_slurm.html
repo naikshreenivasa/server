@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Admin slurm</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    
+  .carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      margin: auto;
+      min-height:200px;
+  }
+
+  /* Hide the carousel text when the screen is less than 600 pixels wide */
+  @media (max-width: 600px) {
+    .carousel-caption {
+      display: none; 
+    }
+  }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">APPCAIR</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.html">Home</a></li>
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+
+  
+<div class="container">    
+  
+  <div class="row">
+  <h3 style="text-transform: uppercase;"><b>Slurm Commands</b></h3><br>
+	<br>
+	<div class="row container" style="background-color:#dad9ff;">
+	<h6><b>To add user to the queue</b></h6>
+		<h6><b>Add user to the queue</b></h6>
+		<code>
+		sacctmgr add user username DefaultAccount=dgxv100
+		</code>
+		<h6><b>To assign GPU to user</b></h6>
+		<code>
+		sacctmgr modify user username set GrpTRES=gres/gpu=2
+		</code><br>&nbsp;
+	</div>
+	<br>
+	<h5><b>To Check Node Status</b></h5>
+	<code>$sinfo</code> - View information about Slurm nodes and partitions. <a href="https://slurm.schedmd.com/sinfo.html">More Details</a>
+	<h5><b>To Check Status of your job</b></h5>
+	<code>$squeue</code> - view information about jobs located in the Slurm scheduling queue. <a href="https://slurm.schedmd.com/squeue.html">More Details</a>
+	<h5><b>To Run your Job in slurm</b></h5>
+	<code>$sbatch script.sh</code> - Submit a batch script to Slurm. <a href="https://slurm.schedmd.com/sbatch.html">More Details</a>
+	<h6><b>Sample script.sh</b></h6>
+	<code>
+	#!/bin/sh
+#SBATCH --job-name=convunext           # Job name<br>
+#SBATCH --time=24:00:00                     # Time limit hrs:min:sec<br>
+#SBATCH --output=convunext.out             # Standard output and error log<br>
+#SBATCH --cpus-per-task=10                  # Run a task on 10 cpus<br>
+#SBATCH --gres=gpu:2                        # Run a single GPU task<br>
+#SBATCH --mem=128GB                          # Use 32GB of memory.<br>
+#SBATCH --partition=normal               # Use dgx partition.<br>
+##SBATCH --account=f20201723<br>
+.<br>.<br>.
+##Your code goes here.<br>.
+
+	</code>
+	<h6><b>Gives details about slurm</b></h6>
+	<code>
+	cat /etc/slurm/slurm.conf
+	</code>
+	<h6><b>To see Queue and GPU allocated</b></h6>
+	<code>
+	sacctmgr show qos
+	</code>
+	<h6><b>To view user associated to queue and GPUs allocated</b></h6>
+	<code>
+	sacctmgr show assoc<br>
+	sacctmgr show assoc | grep locuz<br>
+	</code>
+	<h6><b>Login to a user</b></h6>
+	<code>
+	su - username
+	</code>
+	
+	
+    
+  </div>
+</div><br>
+
+
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>How to run job using slurm</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    
+  .carousel-inner img {
+      width: 100%; /* Set width to 100% */
+      margin: auto;
+      min-height:200px;
+  }
+
+  /* Hide the carousel text when the screen is less than 600 pixels wide */
+  @media (max-width: 600px) {
+    .carousel-caption {
+      display: none; 
+    }
+  }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="index.html">APPCAIR</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.html">Home</a></li>
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+
+
+  
+<div class="container">    
+  
+  <div class="row">
+  <h3 style="text-transform: uppercase;"><b>How to run job using slurm</b></h3><br>
+	<h5><b>To Check Node Status</b></h5>
+	<code>$sinfo</code> - View information about Slurm nodes and partitions. <a href="https://slurm.schedmd.com/sinfo.html">More Details</a>
+	<h5><b>To Check Status of your job</b></h5>
+	<code>$squeue</code> - view information about jobs located in the Slurm scheduling queue. <a href="https://slurm.schedmd.com/squeue.html">More Details</a>
+	<h5><b>To Run your Job in slurm</b></h5>
+	<code>$sbatch script.sh</code> - Submit a batch script to Slurm. <a href="https://slurm.schedmd.com/sbatch.html">More Details</a>
+	<h6><b>Sample script.sh</b></h6>
+	<code>
+	#!/bin/sh
+#SBATCH --job-name=convunext           # Job name<br>
+#SBATCH --time=24:00:00                     # Time limit hrs:min:sec<br>
+#SBATCH --output=convunext.out             # Standard output and error log<br>
+#SBATCH --cpus-per-task=10                  # Run a task on 10 cpus<br>
+#SBATCH --gres=gpu:2                        # Run a single GPU task<br>
+#SBATCH --mem=128GB                          # Use 32GB of memory.<br>
+#SBATCH --partition=normal               # Use dgx partition.<br>
+
+.<br>.<br>.
+##Your code goes here.<br>.
+
+	</code>
+	<h6><b>Sample python program script script.sh</b></h6>
+	<code>
+	#!/bin/sh<br>
+#SBATCH --job-name=convunext           # Job name<br>
+#SBATCH --time=24:00:00                     # Time limit hrs:min:sec<br>
+#SBATCH --output=convunext.out             # Standard output and error log<br>
+#SBATCH --cpus-per-task=10                  # Run a task on 10 cpus<br>
+#SBATCH --gres=gpu:6                        # Run a single GPU task<br>
+#SBATCH --mem=128GB                          # Use 32GB of memory.<br>
+#SBATCH --partition=normal               # Use dgx partition.<br>
+<br>
+
+H5_DIR='../glioma_subtyping/patch_data_20x/Astrocytoma_IDH-mutant/'<br>
+SLIDE_DIR='../glioma_subtyping/data/Astrocytoma_IDH-mutant/'<br>
+CSV_PATH='../glioma_subtyping/patch_data_20x/Astrocytoma_IDH-mutant/process_list_autogen.csv'<br>
+devices=-1<br>
+batch_size=4<br>
+num_workers=10<br>
+seed=1<br>
+# ['dp', 'ddp', 'ddp_spawn']<br>
+strategy='ddp'<br>
+epochs=3<br>
+wandb_exp='glioma_subtyping'<br><br>
+
+python train_convunext.py --data_h5_dir $H5_DIR \<br>
+ --data_slide_dir $SLIDE_DIR \<br>
+ --csv_path $CSV_PATH \<br>
+ --devices $devices \<br>
+ --batch_size $batch_size \<br>
+ --seed $seed \<br>
+ --strategy $strategy \<br>
+ --epochs $epochs \<br>
+ --wandb_exp $wandb_exp \<br>
+ --num_workers $num_workers<br><br>
+
+
+	</code>
+    
+  </div>
+</div><br>
+
+
+
+</body>
+</html>
